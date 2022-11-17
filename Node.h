@@ -3,16 +3,6 @@
 #include <unordered_map>
 #include <vector>
 
-class Graph {
-    public:
-        
-        
-        
-
-    private:
-
-};
-
 struct Node {
     Node(int id_, float x_, float y_) {
         id = id_;
@@ -20,8 +10,8 @@ struct Node {
         y = y_;
     };
 
-    float y; //longitude
     float x; //latitude
+    float y; //longitude
     int id;
 };
 
