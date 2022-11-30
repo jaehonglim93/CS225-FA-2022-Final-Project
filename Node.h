@@ -16,13 +16,13 @@ struct Node {
 };
 
 struct Edge {
-    Edge(Node source_, Node dest_, float weight_) {
-        source = source_;
-        dest = dest_;
+    Edge(int source_, int dest_, float weight_) {
+        id1 = source_;
+        id2 = dest_;
         weight = weight_;
     };
 
-    Node source;
-    Node dest;
+    int id1;
+    int id2;
     float weight;
 };
