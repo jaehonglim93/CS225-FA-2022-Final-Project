@@ -59,10 +59,13 @@ int main() {
     // output bfs
     Graph g(nodes, edges);
 
-    vector<int> bfsOutput = g.BFS(0, 6);
+    vector<int> bfsOutput = g.BFS(1, 6);
 
     for(auto i : bfsOutput) {
         cout << i << endl;
     }
+
+    g.FloydWar();
+
     return 0;
 }

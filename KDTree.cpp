@@ -4,8 +4,6 @@ KDTree::KDTree(vector<Node> nodes) {
   
 }
 
-
-
 typename KDTree<Dim>::KDTreeNode* KDTree<Dim>::sort(vector<Node<Dim>> newPoints, unsigned left, unsigned right, int dimension) {
   if(left > right || newPoints.empty() || left < 0 || left >= newPoints.size()
     || right < 0 || right >= newPoints.size()) {
