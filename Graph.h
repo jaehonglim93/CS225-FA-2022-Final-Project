@@ -17,10 +17,12 @@ class Graph {
         float getDistance(int id1, int id2);
         vector<int> BFS(int startingNode, int endingNode);
         //void Dijkstra();
-        void FloydWar();
+        vector<vector<int>> FloydWar(vector<vector<int>> dist);
+        int FloydShort(vector<vector<int>> dist, int x, int y);
         vector<int> AStar(int startingNode, int endingNode);
         float Heuristic(int id1, int id2);
-        
+        vector<vector<int>> dist;
+
     private:
         vector<Node> nodes;
         vector<Edge> edges;

@@ -28,8 +28,17 @@ Graph::Graph(vector<Node> nodes_, vector<Edge> edges_){
     // Initialize the distance array with the original graph
     N = adjMat.size();
     for (int i = 0; i < N; i++){
+        dist.push_back(vector<int>());
+    }
+    for (int i = 0; i < N; i++){
         for (int j = 0; j < N; j++){
-            //dist[i][j] = adjMat[i][j];
+            dist[i].push_back(0);
+        }
+    }
+    
+    for (int i = 0; i < N; i++){
+        for (int j = 0; j < N; j++){
+            dist[i][j] = adjMat[i][j];
         }
     }
 }
@@ -101,7 +110,7 @@ void Graph::Dijkstra() {
 }
 */
 
-void Graph::FloydWar(){
+vector<vector<int>> Graph::FloydWar(vector<vector<int>> dist){
 
     // Loop through each intermediate node
     for (int k = 0; k < N; k++)
@@ -112,18 +121,25 @@ void Graph::FloydWar(){
             for (int j = 0; j < N; j++)
             {
                 // Update the distance if the path through the intermediate node is shorter
-                //if (dist[i][k] + dist[k][j] < dist[i][j])
-                   // dist[i][j] = dist[i][k] + dist[k][j];
+                if(dist[i][k] + dist[k][j] < dist[i][j]){
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
             }
         }
     }
+    return dist;
+}
+
+int Graph::FloydShort(vector<vector<int>> dist, int x, int y){
+    int distance = dist[x][y];
+    return distance;
 }
 
 
 vector<int> Graph::AStar(int startingNode, int endingNode) {
     vector<int> prev(nodes.size(), -1);
     vector<float> cost(nodes.size(), -1); // total cost (distance)
-    priority_queue<int, vector<int>, float> pq;
+    priority_queue<int, float> pq;
 
     prev[startingNode] = startingNode;
     cost[startingNode] = 0;

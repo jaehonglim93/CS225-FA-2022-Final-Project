@@ -64,8 +64,13 @@ int main() {
     for(auto i : bfsOutput) {
         cout << i << endl;
     }
+    
 
-    g.FloydWar();
+    vector<vector<int>> floydout = g.FloydWar(g.dist);
+
+    int temp = g.FloydShort(floydout, 0, 1);
+
+    cout << temp << endl;
 
     return 0;
 }
