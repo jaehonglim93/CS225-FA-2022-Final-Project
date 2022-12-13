@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.10)
 set(assignment_name "CS225-FA-2022-Final-Project") # Name of the assignment
 set(assignment_version 1.2022.05.0) # Version, where minor=semester_year, patch=semester_end_month, tweak=revision
 set(assignment_entrypoints "main") # Entrypoints to run the program
+set(assignment_entrypoints "test")
 set(assignment_clean_rm) # Generated files that should be removed with "make clean"
 #set(assignment_container "fa22") # Container we are targetting
 set(CS225-FA-2022-Final-Project_dir ${CS225-FA-2022-Final-Project_dir}/lodepng)
@@ -130,6 +131,8 @@ set(entry_dir ${CMAKE_SOURCE_DIR}/entry)
 
 # Add the assignment entrypoints using our libs and src code.
 add_executable(main ${src_dir}/main.cpp)
+
+add_executable(test ${src_dir}/tests.cpp)
 
 #foreach(entrypoint IN LISTS assignment_entrypoints)
     #add_executable(${entrypoint} ${entry_dir}/${entrypoint}.cpp)

@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/workspaces/cs225/Final Project/CS225-FA-2022-Final-Project/build",
+  "command": "/usr/bin/clang++    -pedantic -Wall -Werror -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -g -D_GLIBCXX_DEBUG -O0 -gdwarf-4 -std=gnu++17 -o CMakeFiles/main.dir/main.cpp.o -c \"/workspaces/cs225/Final Project/CS225-FA-2022-Final-Project/main.cpp\"",
+  "file": "/workspaces/cs225/Final Project/CS225-FA-2022-Final-Project/main.cpp"
+}
+]

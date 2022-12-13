@@ -11,8 +11,8 @@
 using namespace std;
 
 int main() {
-    string nodeFile = "../data/test.cnode.txt"; //"../data/cal.cnode.txt";
-    string edgeFile = "../data/test.cedge.txt"; //"../data/cal.cedge.txt";
+    string nodeFile = "../data/cal.cnode.txt";
+    string edgeFile = "../data/cal.cedge.txt";
     
     ifstream ifs(nodeFile);
     string line;
@@ -55,22 +55,21 @@ int main() {
         // Store the line's data into a Node class
         edges.push_back(Edge(id1, id2, weight));
     }
-
+    
     // output bfs
     Graph g(nodes, edges);
 
-    vector<int> bfsOutput = g.BFS(1, 6);
+    vector<int> bfsOutput = g.BFS(1, 2); //sample bfs traversal nodes
 
     for(auto i : bfsOutput) {
         cout << i << endl;
     }
     
+    // output floyd-warshall
+    vector<vector<int>> fWarshall = g.FloydWarshall();
+    float t = fWarshall[0][1]; //sample floydwarshall nodes.
 
-    vector<vector<int>> floydout = g.FloydWar(g.dist);
-
-    int temp = g.FloydShort(floydout, 0, 1);
-
-    cout << temp << endl;
+    cout<< t << endl;
 
     return 0;
 }

@@ -1,5 +1,6 @@
 #include "Graph.h"
 
+
 Graph::Graph(vector<Node> nodes_, vector<Edge> edges_){
     nodes = nodes_;
     edges = edges_;
@@ -8,53 +9,29 @@ Graph::Graph(vector<Node> nodes_, vector<Edge> edges_){
     //adjMat = vector<vector<int>>(nodes.size(), 0);
     adjMat = vector<vector<int>>(nodes.size());
 
-    for(auto v : adjMat) {
-        v = vector<int>();
+    for(vector<int>& v : adjMat) {
+        v = vector<int>(nodes.size(), 0);
     }
 
     for(auto edge : edges) {
-        adjMat[edge.id1].push_back(edge.id2);
-        adjMat[edge.id2].push_back(edge.id1);
-    }
-
-    /* adjList print test
-    for(auto i : adjList) {
-        for(auto j : i) {
-            cout << j << " ";
-        }
-        cout << "\n" << endl;
-    }
-    */
-    // Initialize the distance array with the original graph
-    N = adjMat.size();
-    for (int i = 0; i < N; i++){
-        dist.push_back(vector<int>());
-    }
-    for (int i = 0; i < N; i++){
-        for (int j = 0; j < N; j++){
-            dist[i].push_back(0);
-        }
-    }
-    
-    for (int i = 0; i < N; i++){
-        for (int j = 0; j < N; j++){
-            dist[i][j] = adjMat[i][j];
-        }
+        adjMat[edge.id1][edge.id2] = edge.weight;
+        adjMat[edge.id2][edge.id1] = edge.weight;
     }
 }
 
 vector<int> Graph::getNeighbors(int id) {
-    return adjMat[id];
+    vector<int> output(adjMat.size());
+
+    for(unsigned i = 0; i < adjMat.size(); i++) {
+        if(adjMat[id][i] != 0) {
+            output.push_back(i);
+        }
+    }
+    return output;
 }
 
 float Graph::getDistance(int id1, int id2) {
-    for(auto edge : edges) {
-        if(edge.id1 == id1 && edge.id2 == id2)
-            return edge.weight;
-        else if(edge.id2 == id1 && edge.id1 == id2)
-            return edge.weight;
-    }
-    return -1;
+    return adjMat[id1][id2];
 }
 
 vector<int> Graph::BFS(int startingNode, int endingNode) {
@@ -102,51 +79,52 @@ vector<int> Graph::BFS(int startingNode, int endingNode) {
     return output;
 }
 
-/*
-void Graph::Dijkstra() {
-    vector<float> result;
-    priority_queue<Node, vector<Node>> pq;
-    
-}
-*/
 
-vector<vector<int>> Graph::FloydWar(vector<vector<int>> dist){
+vector<vector<int>> Graph::FloydWarshall() {
+    int n = adjMat.size();
 
-    // Loop through each intermediate node
-    for (int k = 0; k < N; k++)
+    vector<vector<int>> dist;
+
+    for(vector<int> v : adjMat) {
+        dist.push_back(v);
+    }
+
+    // outer loop to iterate over intermediate vertices
+    for (int k = 0; k < n; k++)
     {
-        // Loop through each pair of nodes
-        for (int i = 0; i < N; i++)
+        // inner loop to iterate over source vertices
+        for (int i = 0; i < n; i++)
         {
-            for (int j = 0; j < N; j++)
+            // inner loop to iterate over destination vertices
+            for (int j = 0; j < n; j++)
             {
-                // Update the distance if the path through the intermediate node is shorter
-                if(dist[i][k] + dist[k][j] < dist[i][j]){
+                // if the path from i to j exists
+                // and the path from i to k and k to j
+                // is shorter than the existing path from i to j
+                // then update the distance from i to j
+                if (dist[i][j] > (dist[i][k] + dist[k][j]) && (dist[k][j] != 0 && dist[i][k] != 0)){
                     dist[i][j] = dist[i][k] + dist[k][j];
-                }
+                }           
             }
         }
     }
+    
     return dist;
 }
 
-int Graph::FloydShort(vector<vector<int>> dist, int x, int y){
-    int distance = dist[x][y];
-    return distance;
-}
-
-
-vector<int> Graph::AStar(int startingNode, int endingNode) {
+ vector<int> Graph::AStar(int startingNode, int endingNode) {
     vector<int> prev(nodes.size(), -1);
     vector<float> cost(nodes.size(), -1); // total cost (distance)
-    priority_queue<int, float> pq;
+
+    // struct PriorityNode : int id, float priority
+    priority_queue<PriorityNode> pq;
 
     prev[startingNode] = startingNode;
     cost[startingNode] = 0;
-    pq.emplace(startingNode, (float)0);
+    pq.emplace(PriorityNode(startingNode, 0));
 
     while(!pq.empty()) {
-        int curr = pq.top();
+        int curr = pq.top().id;
         pq.pop();
         
         if(curr == endingNode) {
@@ -154,14 +132,19 @@ vector<int> Graph::AStar(int startingNode, int endingNode) {
         }
 
         for(auto neighbor : getNeighbors(curr)) {
+            if(getDistance(curr, neighbor) == 0) {
+                continue;
+            }
             float new_cost = cost[curr] + getDistance(curr, neighbor);
-
+            if(cost[curr] == -1) {
+                new_cost += 1;
+            }
             if((cost[neighbor] != -1) && (new_cost < cost[neighbor])) {
                 cost[neighbor] = new_cost;
                 prev[neighbor] = curr;
                 
-                float priority = new_cost + Heuristic(curr, neighbor);
-                pq.emplace(neighbor, priority);
+                float priority = new_cost+ Heuristic(curr, neighbor);
+                pq.emplace(PriorityNode(neighbor, priority));
             }
         }
     }
@@ -180,5 +163,6 @@ vector<int> Graph::AStar(int startingNode, int endingNode) {
 float Graph::Heuristic(int node_id, int end_id) {
     Node node = nodes[node_id];
     Node end = nodes[end_id];
-    return abs(node.x - end.x) + abs(node.y - end.y);
+    return getDistance(node_id, end_id);
+    //abs(node.x - end.x) + abs(node.y - end.y);
 }

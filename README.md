@@ -1,8 +1,6 @@
 # CS225-FA-2022-Final-Project
 The graph.h and graph.cpp are the most important files where we initialized the graph of the road system and implemented all the algorithms. 
 
-The node.h file contains structures for nodes and edges. Also, it contains priority node structure for A* algorithm.
-
 The main.cpp reads the data from the cedge.txt and cnode.txt files from the data file. It executes the program that we intend to run on finding the shortest path between two nodes from the data read.
 
 The test.cpp is a test file to run test cases to see if the code works.
